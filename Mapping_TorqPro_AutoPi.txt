@@ -1,0 +1,82 @@
+
+# Modes #
+2102 = Mode 21 and Code 2
+220101 = Mode 220 and Code 101
+
+# Floats #
+x/100 = x/100.0
+
+# Less than #
+we multiply with power of
+eg {aj<24} = aj*(2^24) = message.data[38:39]*16,777,216
+
+# Colon #
+bit AND with base2 power of x
+eg {ay:7} = message.data[53:54]&(2^7)
+
+# Signed #
+SIGNED(singlebyte) = twos_comp(singlebyte,8)
+SIGNED(doublebyte) = twos_comp(doublebyte,16)
+
+# A B C .. #
+a = bytes_to_int(message.data[3:4])
+b = bytes_to_int(message.data[4:5])
+c = bytes_to_int(message.data[5:6])
+aa = bytes_to_int(message.data[29:30])
+
+
+# 3 A 
+# 4 B
+# 5 C
+# 6 D
+# 7 E
+# 8 F
+# 9 G
+# 10 H
+# 11 I
+# 12 J
+# 13 K
+# 14 L
+# 15 M
+# 16 N
+# 17 O
+# 18 P
+# 19 Q
+# 20 R
+# 21 S
+# 22 T
+# 23 U
+# 24 V
+# 25 W
+# 26 X
+# 27 Y
+# 28 Z
+# 29 AA
+# 30 AB
+# 31 AC
+# 32 AD
+# 33 AE
+# 34 AF
+# 35 AG
+# 36 AH
+# 37 AI
+# 38 AJ
+# 39 AK
+# 40 AL
+# 41 AM
+# 42 AN
+# 43 AO
+# 44 AP
+# 45 AQ
+# 46 AR
+# 47 AS
+# 48 AT
+# 49 AU
+# 50 AV
+# 51 AW
+# 52 AX
+# 53 AY
+# 54 AZ
+# 55 BA
+# 56 BB
+# 57 BC
