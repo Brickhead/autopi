@@ -1,7 +1,9 @@
-import requests
-from datetime import datetime  
-from datetime import timedelta  
 import pickle
+import os
+from datetime import datetime  
+from datetime import timedelta
+from dateutil.parser import parse
+
 
 def poll():
     charging = get_charging()
@@ -11,22 +13,24 @@ def poll():
         return {"msg": "sleep disabled"}
     else:
         enable_sleep()
+        delete()
         return {"msg": "sleep enabled"}
 
 
 # Check if we have been driving within the last 5 minutes
 def get_driving():
+    persistance = load()
     rpm = get_driveMotorSpeed()
     if rpm > 10: # if we have more than 10 rpm we should be moving.
-        persistance['lastDrive'] = datetime.datetime.now()
+        persistance['lastDrive'] = datetime.now()
+        save(persistance)
         return 1
-    if (persistance['lastDrive'] + timedelta(minutes=5) ) > datetime.datetime.now():
+    if (persistance['lastDrive'] + timedelta(minutes=10)) > datetime.now(): # Drove within the last 5 minutes
         return 1
     else:
         return 0
 
 # enable autopi sleep
-#
 def enable_sleep():
     args = ['sleep']
     kwargs = {
@@ -35,7 +39,6 @@ def enable_sleep():
     __salt__['power.sleep_timer'](**kwargs)
 
 # disable autopi sleep
-#
 def disable_sleep():
     args = ['sleep']
     kwargs = {
@@ -44,11 +47,26 @@ def disable_sleep():
     __salt__['power.sleep_timer'](**kwargs)
 
 
-# --- OBD ----
+# --- Persistance ---
+
+def load():
+    try:
+        persistance = pickle.load( open( 'sleepData.p', 'rb' ) )
+    except:
+        persistance = { 'lastDrive': parse("2010-01-01 00:00:00") }
+    return persistance
+
+def save(persistance):
+    pickle.dump( persistance, open( "charge_status.p", "wb" ) )
+
+def delete():
+    os.remove("charge_status.p")
+
+# --- OBD ---
 
 def get_charging():
     try:
-        args = ['driving']
+        args = ['charging']
         kwargs = {
         'mode': '21',
         'pid': '01',
